@@ -20,7 +20,7 @@ If you downloaded the setup file manually, make sure to make it executable using
 `chmod +x FCR_setup.sh`
 4. run the script:
 `./FCR_setup.sh`
-5. open "FCR.config" with a text editor and make necessary changes to folder paths (default paths are the home directory of my raspberry pi user)
+5. open "FCR.config" with a text editor and make necessary changes to folder paths (default paths are the home directory of my raspberry pi user, as an example)
 6. restart the PC/server **or** run the following command (as specified in crontab)
 make sure to swap out {your-filechangerss-install-path-here} for your file-change-RSS install folder:  
 `screen -dmS filechangerss && screen -S filechangerss -X stuff "{your-filechangerss-install-path-here}/inotify.sh"`
