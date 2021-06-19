@@ -10,8 +10,9 @@ You can upload it later onto a webserver to read it with an RSS feed reader.
     4. [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-7.1)
     5. [screen](https://man7.org/linux/man-pages/man1/screen.1.html)
 
-2. Run this command in order to download the setup file to your current directory:
-Alternatively you can download the file manually and move it where you want.
+2. Run this command in order to download the setup file to your current directory:  
+`curl https://github.com/Skaldhor/file-change-RSS/releases/download/v0.1-alpha/FCR_setup.sh -o FCR.config`
+Alternatively you can download the file manually [from the releases](https://github.com/Skaldhor/file-change-RSS/releases/latest) and move it where you want.
 
 3. **Before running the setup** file open it with a text editor and specify the install folder for file-change-RSS.
 All necessary files will be created in this directory.
