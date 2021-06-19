@@ -14,7 +14,7 @@ You can upload it later onto a webserver to read it with an RSS feed reader.
 `curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.1-alpha/FCR_setup.sh -o FCR_setup.sh && chmod +x FCR_setup.sh`  
 Alternatively you can download the file manually [from the releases](https://github.com/Skaldhor/file-change-RSS/releases/latest) and move it where you want.
 
-3. **Before running the setup** file open it with a text editor and specify the install folder for file-change-RSS.
+3. **Before running the setup file**, open it with a text editor and specify the install folder for file-change-RSS.
 All necessary files will be created in this directory.
 If you downloaded the setup file manually, make sure to make it executable using:
 `chmod +x FCR_setup.sh`
@@ -27,9 +27,9 @@ make sure to swap out {your-filechangerss-install-path-here} for your file-chang
 7. Done, your RSS feed xml file will be created/updated every 5 minutes (at the specified path in the config file).
 
 ## Usage/explanation
-After installation two cronjobs will be created.
-Job 1 will run "screen" to create a new screen in the background running inotify.
-Inotify watches your specified folder (in the config file) for changes and writes them into a log file (specified in the config file).
-Job 2 will run a powershell script every 5 minutes whitch takes the inotify log and converts it to an RSS feed xml file (output specified in the config file).
+After installation two cronjobs will be created.  
+Job 1 will run "screen" to create a new screen in the background running inotify.  
+Inotify watches your specified folder (in the config file) for changes and writes them into a log file (specified in the config file).  
+Job 2 will run a powershell script every 5 minutes, which takes the inotify log and converts it to an RSS feed xml file (output specified in the config file).
 
 You can then publish the file to a webserver on your own, in order to read it with an RSS feed reader.
