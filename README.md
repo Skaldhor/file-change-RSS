@@ -3,7 +3,7 @@ file-change-RSS creates an RSS feed (xml file) of file changes in a local folder
 You can upload it later onto a webserver to read it with an RSS feed reader.
 
 ## Installation
-1. Make sure install all dependencies first, file-change-RSS requires:
+1. Make sure to install all dependencies first, file-change-RSS requires:
     1. [curl](https://man7.org/linux/man-pages/man1/curl.1.html)
     2. [cron](https://man7.org/linux/man-pages/man8/cron.8.html) / [crontab](https://man7.org/linux/man-pages/man5/crontab.5.html)
     3. [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html)
