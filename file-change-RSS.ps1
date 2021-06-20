@@ -5,11 +5,11 @@ Get-Content $PSScriptRoot/FCR.ini | Where-Object {$_.StartsWith("$")} | ForEach-
 function RSS_items($date, $path, $event){
 Add-Content $tmp_RSS_items "        <item>
             <title>Event $event for file: $path</title>
-            <link>file://$path</link>
+            <link>file://$pc_addr$path</link>
             <guid>file://$path</guid>
             <pubDate>$date</pubDate>
-            <description>Following file $event: $path from: $date</description>
-            <media:thumbnail url=""file://$path""/>
+            <description>Following file $event : $path from: $date</description>
+            <media:thumbnail url=""file://$pc_addr$path""/>
         </item>"
 }
 
