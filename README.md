@@ -1,35 +1,22 @@
 # file-change-RSS
-file-change-RSS creates an RSS feed (xml file) of file changes in a local folder (and subfolders) for linux.
+file-change-RSS creates an RSS feed (xml file) of file changes in a local folder (and subfolders).
 You can upload it later onto a webserver to read it with an RSS feed reader.
 
 ## Installation
-1. Make sure to install all dependencies first, file-change-RSS requires:
-    1. [curl](https://man7.org/linux/man-pages/man1/curl.1.html)
-    2. [cron](https://man7.org/linux/man-pages/man8/cron.8.html) / [crontab](https://man7.org/linux/man-pages/man5/crontab.5.html)
-    3. [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html)
-    4. [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-7.1)
-    5. [screen](https://man7.org/linux/man-pages/man1/screen.1.html)
+1. Make sure to install all dependencies first, file-change-RSS requires: [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-7.1)  
+If you're using linux, make sure to install software for scheduled script execution, for example [cron](https://man7.org/linux/man-pages/man8/cron.8.html) / [crontab](https://man7.org/linux/man-pages/man5/crontab.5.html). You may also want to install [screen](https://man7.org/linux/man-pages/man1/screen.1.html), since the folder monitoring will block the terminal.
+2. Download the three files [from the releases](https://github.com/Skaldhor/file-change-RSS/releases/latest) and save them all in the same folder.
+3. Open "FCR.ini" with a text editor and make necessary changes to folder paths.
+4. Create a scheduled task to run the folder monitoring script once at reboot (monitor.ps1).  
+You can use the Windows Task Scheduler for this, or for linux you can create a cron job like:  
+`@reboot sleep 60 && screen -dmS fcr && screen -S fcr -X stuff "pwsh /home/pi/FCR/monitor.ps1^M"`  
+Make sure to reboot or start the script manually once.
+5. Create a scheduled task to create the RSS file (file-change-RSS.ps1) every few minutes (or how often you want it to be updated).  
+You can use the Windows Task Scheduler for this, or for linux you can create a cron job like:  
+`*/5 * * * * pwsh /home/pi/FCR/file-change-RSS.ps1`
+6. Done, your RSS feed xml file will be created/updated at the set interval (at the specified path in the ini file).
 
-2. Run this command in order to download the setup "FCR_setup.sh" file to your current directory:  
-`curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.2-alpha/FCR_setup.sh -o FCR_setup.sh && chmod +x FCR_setup.sh`  
-Alternatively you can download the file manually [from the releases](https://github.com/Skaldhor/file-change-RSS/releases/latest) and move it where you want.
-
-3. **Before running the setup file**, open it with a text editor and specify the install folder for file-change-RSS.
-All necessary files will be created in this directory.
-If you downloaded the setup file manually, make sure to make it executable using:
-`chmod +x FCR_setup.sh`
-4. run the script:
-`./FCR_setup.sh`
-5. open "FCR.config" with a text editor and make necessary changes to folder paths (default paths are the home directory of my raspberry pi user, as an example)
-6. restart the PC/server **or** run the following command (as specified in crontab)
-make sure to swap out {your-filechangerss-install-path-here} for your file-change-RSS install folder:  
-`screen -dmS filechangerss && screen -S filechangerss -X stuff "{your-filechangerss-install-path-here}/inotify.sh"`
-7. Done, your RSS feed xml file will be created/updated every 5 minutes (at the specified path in the config file).
-
-## Usage/explanation
-After installation two cronjobs will be created.  
-Job 1 will run "screen" to create a new screen in the background running inotify.  
-Inotify watches your specified folder (in the config file) for changes and writes them into a log file (specified in the config file).  
-Job 2 will run a powershell script every 5 minutes, which takes the inotify log and converts it to an RSS feed xml file (output specified in the config file).
-
-You can then publish the file to a webserver on your own, in order to read it with an RSS feed reader.
+## Usage after installation
+If you set everything up, there should now be your RSS feed saved at the specified path in the ini file.  
+You can then publish the file to a webserver, in order to read it with an RSS feed reader.  
+Ideally, you set the RSS output path in the ini file directly to the web server, if it's hosted locally.
