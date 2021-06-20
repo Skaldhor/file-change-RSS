@@ -1,5 +1,5 @@
 # importing variables
-Get-Content $PSScriptRoot/FCR.config | Where-Object {$_.StartsWith("$")} | ForEach-Object {Invoke-Expression "$_" }
+Get-Content $PSScriptRoot/FCR.ini | Where-Object {$_.StartsWith("$")} | ForEach-Object {Invoke-Expression "$_" }
 
 # creating functions
 function RSS_items($date, $path, $event){
@@ -8,7 +8,7 @@ Add-Content $tmp_RSS_items "        <item>
             <link>file://$path</link>
             <guid>file://$path</guid>
             <pubDate>$date</pubDate>
-            <description>Event $event for file: $path from: $date</description>
+            <description>Following file $event: $path from: $date</description>
             <media:thumbnail url=""file://$path""/>
         </item>"
 }
@@ -16,15 +16,15 @@ Add-Content $tmp_RSS_items "        <item>
 # delete existing (if present) and create new empty tmp files
 If (Test-Path $tmp_RSS_items) { Remove-Item $tmp_RSS_items -Force }
 New-Item -Path $tmp_RSS_items -ItemType "file" -Force >$null 2>&1
-If (Test-Path $tmp_inverted_inotify_log) { Remove-Item $tmp_inverted_inotify_log -Force }
-New-Item -Path $tmp_inverted_inotify_log -ItemType "file" -Force >$null 2>&1
+If (Test-Path $tmp_inverted_log) { Remove-Item $tmp_inverted_log -Force }
+New-Item -Path $tmp_inverted_log -ItemType "file" -Force >$null 2>&1
 
-# inverting inotify log, so the latest entries are on top
-$log = Get-Content -Path $inotify_log
-Add-Content -Path $tmp_inverted_inotify_log -Value ($log[($log.Length-1)..0])
+# inverting file change log, so the latest entries are on top
+$log = Get-Content -Path $file_change_log
+Add-Content -Path $tmp_inverted_log -Value ($log[($log.Length-1)..0])
 
 # writing RSS items to tmp_RSS_items file
-$input = Get-Content $tmp_inverted_inotify_log
+$input = Get-Content $tmp_inverted_log
 
 foreach ($line in $input)
 {
@@ -57,4 +57,4 @@ Add-Content $RSS_output_file "	</channel>
 
 # delete tmp files
 Remove-Item $tmp_RSS_items -Force
-Remove-Item $tmp_inverted_inotify_log -Force
+Remove-Item $tmp_inverted_log -Force
