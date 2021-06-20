@@ -12,9 +12,9 @@ FILECHANGERSS="/home/pi/file-change-rss"
 [ ! -d "$FILECHANGERSS/tmp" ] && mkdir $FILECHANGERSS/tmp
 
 # download additional files
-curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.1-alpha/file-change-RSS.ps1 -o $FILECHANGERSS/file-change-RSS.ps1
-curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.1-alpha/inotify.sh -o $FILECHANGERSS/inotify.sh
-curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.1-alpha/FCR.config -o $FILECHANGERSS/FCR.config
+curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.2-alpha/file-change-RSS.ps1 -o $FILECHANGERSS/file-change-RSS.ps1
+curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.2-alpha/inotify.sh -o $FILECHANGERSS/inotify.sh
+curl -L https://github.com/Skaldhor/file-change-RSS/releases/download/v0.2-alpha/FCR.config -o $FILECHANGERSS/FCR.config
 
 # make inotify executable
 chmod +x $FILECHANGERSS/inotify.sh
