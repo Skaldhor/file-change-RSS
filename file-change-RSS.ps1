@@ -5,11 +5,11 @@ Get-Content $PSScriptRoot/FCR.ini | Where-Object {$_.StartsWith("$")} | ForEach-
 function RSS_items($date, $path, $fileEvent){
 Add-Content $tmp_RSS_items "        <item>
             <title>Event $fileEvent for file: $path</title>
-            <link>file://$pc_addr$path</link>
-            <guid>file://$path</guid>
+            <link>$protocol//$pc_addr/$path</link>
+            <guid>$protocol//$pc_addr/$path</guid>
             <pubDate>$date</pubDate>
             <description>Following file $fileEvent : $path from: $date</description>
-            <media:thumbnail url=""file://$pc_addr$path""/>
+            <media:thumbnail url=""$protocol//$pc_addr/$path""/>
         </item>"
 }
 
@@ -21,7 +21,9 @@ New-Item -Path $tmp_inverted_log -ItemType "file" -Force >$null 2>&1
 
 # inverting file change log, so the latest entries are on top
 $log = Get-Content -Path $file_change_log
-Add-Content -Path $tmp_inverted_log -Value ($log[($log.Length-1)..0])
+#Add-Content -Path $tmp_inverted_log -Value ($log[($log.Length-1)..0])
+[array]::Reverse($log)
+Add-Content -Path $tmp_inverted_log -Value $log
 
 # writing RSS items to tmp_RSS_items file
 $invLog = Get-Content $tmp_inverted_log
@@ -30,7 +32,16 @@ foreach ($line in $invLog)
 {
     $array = $line.Split(";")
     $date = $array[0]
-    $path = $array[1]
+    $rawPath = $array[1]
+    if($rawPath.Contains("/") -eq $true){$os_type = "Linux"}
+    elseif($rawPath.Contains("\") -eq $true){$os_type = "Windows"}
+    if($os_type -eq "Linux"){$splitPath = $rawPath.Split("/")}
+    elseif($os_type -eq "Windows"){$splitPath = $rawPath.Split("\")}
+    if($splitPath[0] -eq ""){$folders_to_strip = $folders_to_strip + 1}
+    $strippedPathLength = ($splitPath.Length) - $folders_to_strip
+    $first_item = $splitPath.Length - $strippedPathLength
+    $path_array = $splitPath[$first_item..($splitPath.Length - 1)]
+    $path = $path_array -join "/"
     $fileEvent = $array[2]
     RSS_items $date $path $fileEvent
 }
